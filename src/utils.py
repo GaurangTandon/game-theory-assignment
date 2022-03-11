@@ -1,6 +1,9 @@
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
+
+def read_vec():
+    return list(map(int, input().split()))
 
 def read_nfg_payoff(strategies: List[int], full_payoff_list: List[int]):
     """
