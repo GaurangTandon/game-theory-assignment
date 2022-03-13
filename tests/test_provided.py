@@ -37,7 +37,7 @@ def test_provided_games(nfg_str: str):
     nfg_str = nfg_str.strip()
 
     if nfg_str.split(" ", 4)[2] != "R":
-        pytest.skip()
+        pytest.skip("not correct format")
 
     gambit_g = pygambit.Game.parse_game(nfg_str)
 
@@ -46,10 +46,10 @@ def test_provided_games(nfg_str: str):
     n_strategies = [len(gambit_g.players[i].strategies) for i in range(n)]
 
     if len(utility_list) != n * np.prod(n_strategies):
-        pytest.skip()
+        pytest.skip("not correct format")
 
     if len(utility_list) > int(1e6):
-        pytest.skip()
+        pytest.skip("too large test case")
 
     psne_gambit_g = pygambit.nash.enumpure_solve(gambit_g, external=True)
 
@@ -62,7 +62,7 @@ def test_provided_games(nfg_str: str):
 
 
 @pytest.mark.timeout(1)
-def test_manual_games(game_args: Tuple, ans):
+def test_manual_games(game_args: Tuple, ans: List[List[int]]):
     g = Game(*game_args)
     psne_g = g.list_all_psne()
 
