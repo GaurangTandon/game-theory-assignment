@@ -1,3 +1,4 @@
+from itertools import product as cartesian_product
 from typing import List
 
 from utils import read_vec
@@ -122,8 +123,34 @@ class Game():
         psne_list = self._get_all_psne()
         return self._get_human_readable_strategy_list(psne_list)
 
-    def list_all_wdse(self):
-        pass
+    def _get_all_vwdse(self):
+        vwdse_strategies: List[List[int]] = []
+        for player in range(self.player_count):
+            our_payoffs = self.payoffs[:, player]
+            prev_best = None
+
+            for strategy in range(self.strategy_count[player]):
+                str_payoffs = our_payoffs[strategy]
+                if prev_best is None or (str_payoffs > prev_best).all():
+                    prev_best = str_payoffs
+            
+            assert prev_best is not None
+
+            my_vwdse_strategies: List[int] = []
+            for strategy in range(self.strategy_count[player]):
+                if (our_payoffs[strategy] >= prev_best).all():
+                    my_vwdse_strategies.append(strategy)
+            
+            assert my_vwdse_strategies # non empty
+            
+            vwdse_strategies.append(my_vwdse_strategies)
+        
+        
+        return [list(x) for x in cartesian_product(*vwdse_strategies)]
+
+    def list_all_vwdse(self):
+        vwdse = self._get_all_vwdse()
+        return self._get_human_readable_strategy_list(vwdse)
 
 
 if __name__ == "__main__":
@@ -134,4 +161,4 @@ if __name__ == "__main__":
 
     # TODO: find some better game payoff matrix to test the psne listing
     print(game.list_all_psne())
-    print(game.list_all_wdse())
+    print(game.list_all_vwdse())
