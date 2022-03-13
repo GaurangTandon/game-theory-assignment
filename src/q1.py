@@ -1,9 +1,10 @@
 from itertools import product as cartesian_product
 from typing import List
 
-from utils import read_vec
 import numpy as np
 
+def read_vec():
+    return list(map(int, input().split()))
 
 class Game():
     def __init__(self, player_count: int=0, strategy_list: List[int]=[], payoff_list: List[int]=[]) -> None:
