@@ -147,7 +147,9 @@ class Game:
                 if (our_payoffs[strategy] >= prev_best).all():
                     my_vwdse_strategies.append(strategy)
 
-            assert my_vwdse_strategies  # non empty
+            if not my_vwdse_strategies:
+                # no equilibrium can exist
+                return []
 
             vwdse_strategies.append(my_vwdse_strategies)
 
