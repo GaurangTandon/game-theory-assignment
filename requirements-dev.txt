@@ -7,3 +7,4 @@ isort
 
 # testing
 pytest
+pytest-timeout
