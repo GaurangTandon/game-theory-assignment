@@ -39,7 +39,6 @@ class Game:
             payoffs_to_assign = full_payoff_list[
                 payoff_list_index : payoff_list_index + self.player_count
             ]
-            print(tuple(current_strategies) , payoffs_to_assign)
             payoffs_mat[tuple(current_strategies)] = payoffs_to_assign
             payoff_list_index += self.player_count
             if self._increment(current_strategies):
