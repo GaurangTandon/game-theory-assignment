@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 
 import numpy as np
 import pygambit
@@ -8,7 +8,7 @@ from q1 import Game
 
 def helper_convert_gambit_psne_to_ours(
     gambit_g, gambit_psne: List[List[float]]
-) -> List[List[int]]:
+) -> Set[List[int]]:
     psne_strats = []
     processed_idx = 0
 
@@ -28,7 +28,7 @@ def helper_convert_gambit_psne_to_ours(
             )
         psne_strats.append(strat)
 
-    return psne_strats
+    return set(psne_strats)
 
 
 def test_provided_games(nfg_str: str):
@@ -42,9 +42,12 @@ def test_provided_games(nfg_str: str):
     if len(utility_list) != n * np.prod(n_strategies):
         return
 
+    if len(utility_list) > int(1e6):
+        return
+
     g = Game(n, n_strategies, utility_list)
 
     psne_gambit_g = pygambit.nash.enumpure_solve(gambit_g)
-    psne_g = g.list_all_psne()
+    psne_g = set(g.list_all_psne())
 
     assert psne_g == helper_convert_gambit_psne_to_ours(gambit_g, psne_gambit_g)
