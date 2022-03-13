@@ -1,3 +1,4 @@
+from copy import deepcopy
 from itertools import product as cartesian_product
 from typing import List
 
@@ -110,7 +111,7 @@ class Game:
                     break
 
             if is_max:
-                psne_list.append(matrix_index)
+                psne_list.append(deepcopy(matrix_index))
 
             if self._increment(matrix_index):
                 break
