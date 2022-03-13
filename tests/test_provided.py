@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List, Tuple
 
 import numpy as np
 import pygambit
@@ -56,4 +56,14 @@ def test_provided_games(nfg_str: str):
     g = Game(n, n_strategies, utility_list)
     psne_g = g.list_all_psne()
 
-    assert sorted(psne_g) == sorted(helper_convert_gambit_psne_to_ours(gambit_g, psne_gambit_g))
+    assert sorted(psne_g) == sorted(
+        helper_convert_gambit_psne_to_ours(gambit_g, psne_gambit_g)
+    )
+
+
+@pytest.mark.timeout(1)
+def test_manual_games(game_args: Tuple, ans):
+    g = Game(*game_args)
+    psne_g = g.list_all_psne()
+
+    assert sorted(psne_g) == sorted(ans)

@@ -1,6 +1,6 @@
 from copy import deepcopy
 from itertools import product as cartesian_product
-from typing import List
+from typing import List, Optional
 
 import numpy as np
 
@@ -15,10 +15,15 @@ class Game:
         player_count: int = 0,
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
+        payoff_matrix: Optional[np.ndarray] = None,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
-        self.payoffs = self._read_nfg_payoff(payoff_list or read_vec())
+        self.payoffs = (
+            payoff_matrix
+            if payoff_matrix is not None
+            else self._read_nfg_payoff(payoff_list or read_vec())
+        )
 
         # TODO: delete the players with strategy set size equal to 1
         # in order to reduce the complexity of this algorithm
@@ -132,6 +137,7 @@ class Game:
     def _get_all_vwdse(self):
         vwdse_strategies: List[List[int]] = []
         for player in range(self.player_count):
+            # TODO: fix indexing
             our_payoffs = self.payoffs[:, player]
             prev_best = None
 
