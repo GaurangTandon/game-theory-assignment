@@ -1,0 +1,9 @@
+# gambit
+cython
+
+# formatting
+black
+isort
+
+# testing
+pytest
