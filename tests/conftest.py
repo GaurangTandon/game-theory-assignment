@@ -2,10 +2,16 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 REPO_ROOT = Path(__file__).parent.parent
 
 sys.path.insert(0, str(REPO_ROOT / "src"))
+
+
+@pytest.fixture
+def skip_test():
+    pytest.skip("Skipping test due to cli args")
 
 
 def pytest_addoption(parser):
@@ -19,17 +25,39 @@ def pytest_generate_tests(metafunc):
     if "nfg_str" in metafunc.fixturenames:
         if metafunc.config.getoption("gambit") or metafunc.config.getoption("all"):
             metafunc.parametrize("nfg_str", [nfg.read_text() for nfg in gambit_nfgs])
+        else:
+            metafunc.fixturenames.insert(0, "skip_test")
     elif "game_args" in metafunc.fixturenames:
         if metafunc.config.getoption("manual") or metafunc.config.getoption("all"):
             metafunc.parametrize(
                 "game_args,ans",
                 [
                     (
-                        (2, [2, 2], [], np.array([[[2, 2], [6, 4]], [[4, 6], [2, 2]]])),
+                        (
+                            2,
+                            [2, 2],
+                            [],
+                            np.array(
+                                [
+                                    [[2, 2], [6, 4]],
+                                    [[4, 6], [2, 2]],
+                                ]
+                            ),
+                        ),
                         [[1, 2], [2, 1]],
                     ),
                     (
-                        (2, [2, 2], [], np.array([[[3, 2], [2, 4]], [[2, 4], [3, 2]]])),
+                        (
+                            2,
+                            [2, 2],
+                            [],
+                            np.array(
+                                [
+                                    [[3, 2], [2, 4]],
+                                    [[2, 4], [3, 2]],
+                                ]
+                            ),
+                        ),
                         [],
                     ),
                     (
@@ -69,3 +97,5 @@ def pytest_generate_tests(metafunc):
                     ),
                 ],
             )
+        else:
+            metafunc.fixturenames.insert(0, "skip_test")
