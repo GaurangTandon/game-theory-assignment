@@ -11,22 +11,21 @@ def helper_convert_gambit_psne_to_ours(
     gambit_g: pygambit.Game, gambit_psne: List[List[float]]
 ) -> List[List[int]]:
     psne_strats: List[List[int]] = []
-    processed_idx = 0
 
     for psne in gambit_psne:
         psne = list(psne)
         strat: List[int] = []
+        processed_idx = 0
 
-        for i in range(len(gambit_g.players)):
+        for player in gambit_g.players:
             strat.append(
                 1
                 + np.argmax(
-                    psne[
-                        processed_idx : processed_idx
-                        + len(gambit_g.players[i].strategies)
-                    ]
+                    psne[processed_idx : processed_idx + len(player.strategies)]
                 )
             )
+            processed_idx += len(player.strategies)
+
         psne_strats.append(strat)
 
     return psne_strats
