@@ -45,7 +45,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [2, 1]],
-                        [],
+                        None,
                     ),
                     (
                         (
@@ -60,7 +60,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [],
-                        [],
+                        None,
                     ),
                     (
                         (
@@ -76,13 +76,13 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [3, 3], [2, 1]],
-                        [],
+                        None,
                     ),
                     (
                         (
                             3,
                             [2, 2, 2],
-                            [],
+                            None,
                             np.array(
                                 [
                                     [
@@ -97,7 +97,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[2, 2, 2]],
-                        [],
+                        None,
                     ),
                     (
                         (
@@ -111,7 +111,7 @@ def pytest_generate_tests(metafunc):
                                 ]
                             ),
                         ),
-                        [],
+                        None,
                         [[2, 2]],
                     ),
                     (
@@ -127,7 +127,7 @@ def pytest_generate_tests(metafunc):
                                 ]
                             ),
                         ),
-                        [],
+                        None,
                         [[2, 2], [3, 2]],
                     ),
                     (
@@ -142,7 +142,7 @@ def pytest_generate_tests(metafunc):
                                 ]
                             ),
                         ),
-                        [],
+                        None,
                         [],
                     ),
                     (
@@ -173,7 +173,7 @@ def pytest_generate_tests(metafunc):
                             [],
                             np.array([[[0, 1]], [[1, 0]], [[3, 2]], [[-1, 5]]]),
                         ),
-                        [],
+                        None,
                         [3, 1],
                     ),
                 ],

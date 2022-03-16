@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import pygambit
@@ -62,14 +62,16 @@ def test_provided_games(nfg_str: str):
 
 @pytest.mark.timeout(1)
 def test_manual_games(
-    game_args: Tuple, psne_strats: List[List[int]], vwdse_strats: List[List[int]]
+    game_args: Tuple,
+    psne_strats: Optional[List[List[int]]],
+    vwdse_strats: Optional[List[List[int]]],
 ):
     g = Game(*game_args)
 
-    if psne_strats:
+    if psne_strats is not None:
         psne_g = g.list_all_psne()
         assert sorted(psne_g) == sorted(psne_strats)
 
-    if vwdse_strats:
+    if vwdse_strats is not None:
         vwdse_g = g.list_all_vwdse()
         assert sorted(vwdse_g) == sorted(vwdse_strats)
