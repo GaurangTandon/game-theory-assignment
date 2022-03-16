@@ -30,7 +30,7 @@ def pytest_generate_tests(metafunc):
     elif "game_args" in metafunc.fixturenames:
         if metafunc.config.getoption("manual") or metafunc.config.getoption("all"):
             metafunc.parametrize(
-                "game_args,ans",
+                "game_args,psne_strats,vwdse_strats",
                 [
                     (
                         (
@@ -45,6 +45,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [2, 1]],
+                        [],
                     ),
                     (
                         (
@@ -58,6 +59,7 @@ def pytest_generate_tests(metafunc):
                                 ]
                             ),
                         ),
+                        [],
                         [],
                     ),
                     (
@@ -74,6 +76,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [3, 3], [2, 1]],
+                        [],
                     ),
                     (
                         (
@@ -94,6 +97,84 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[2, 2, 2]],
+                        [],
+                    ),
+                    (
+                        (
+                            2,
+                            [2, 2],
+                            [],
+                            np.array(
+                                [
+                                    [[1, 1], [0, 3]],
+                                    [[1, 2], [2, 2]],
+                                ]
+                            ),
+                        ),
+                        [],
+                        [[2, 2]],
+                    ),
+                    (
+                        (
+                            2,
+                            [3, 3],
+                            [],
+                            np.array(
+                                [
+                                    [[0, 5], [1, 5], [3, 1]],
+                                    [[1, 3], [2, 3], [3, 2]],
+                                    [[1, 5], [2, 3], [3, 3]],
+                                ]
+                            ),
+                        ),
+                        [],
+                        [[2, 2], [3, 2]],
+                    ),
+                    (
+                        (
+                            2,
+                            [2, 3],
+                            [],
+                            np.array(
+                                [
+                                    [[1, 5], [3, 4], [1, 1]],
+                                    [[2, 5], [2, 3], [3, 2]],
+                                ]
+                            ),
+                        ),
+                        [],
+                        [],
+                    ),
+                    (
+                        (
+                            3,
+                            [2, 2, 2],
+                            [],
+                            np.array(
+                                [
+                                    [
+                                        [[0, 0, 0], [1, 1, -1]],
+                                        [[1, -1, 1], [2, 0, 0]],
+                                    ],
+                                    [
+                                        [[-1, 1, 1], [0, 2, 0]],
+                                        [[0, 0, 2], [1, 1, 1]],
+                                    ],
+                                ]
+                            ),
+                        ),
+                        [[1, 1, 1]],
+                        [[1, 1, 1]],
+                    ),
+                    (
+                        (
+                            2,
+                            [4, 1],
+                            [],
+                            np.array([[[0, 1]], [[1, 0]], [[3, 2]], [[-1, 5]]]),
+                        ),
+                        [],
+                        [3, 1],
                     ),
                 ],
             )
