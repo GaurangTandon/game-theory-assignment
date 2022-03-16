@@ -62,8 +62,15 @@ def test_provided_games(nfg_str: str):
 
 
 @pytest.mark.timeout(1)
-def test_manual_games(game_args: Tuple, ans: List[List[int]]):
+def test_manual_games(
+    game_args: Tuple, psne_strats: List[List[int]], vwdse_strats: List[List[int]]
+):
     g = Game(*game_args)
-    psne_g = g.list_all_psne()
 
-    assert sorted(psne_g) == sorted(ans)
+    if psne_strats:
+        psne_g = g.list_all_psne()
+        assert sorted(psne_g) == sorted(psne_strats)
+
+    if vwdse_strats:
+        vwdse_g = g.list_all_vwdse()
+        assert sorted(vwdse_g) == sorted(vwdse_strats)
