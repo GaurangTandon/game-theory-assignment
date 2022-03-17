@@ -142,10 +142,16 @@ class Game:
 
             for strategy in range(self.strategy_counts[player]):
                 str_payoffs = our_payoffs.take(strategy, axis=player)
-                if prev_best is None or (str_payoffs > prev_best).all():
+                if prev_best is None or (str_payoffs >= prev_best).all():
                     prev_best = str_payoffs
 
             assert prev_best is not None
+
+            # ensure prev_best is better than other strategies
+            for strategy in range(self.strategy_counts[player]):
+                str_payoffs = our_payoffs.take(strategy, axis=player)
+                if not (prev_best >= str_payoffs).all():
+                    return []
 
             my_vwdse_strategies: List[int] = []
             for strategy in range(self.strategy_counts[player]):
