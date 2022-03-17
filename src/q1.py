@@ -137,12 +137,11 @@ class Game:
     def _get_all_vwdse(self):
         vwdse_strategies: List[List[int]] = []
         for player in range(self.player_count):
-            # TODO: fix indexing
-            our_payoffs = self.payoffs[:, player]
+            our_payoffs = self.payoffs[..., player]
             prev_best = None
 
             for strategy in range(self.strategy_counts[player]):
-                str_payoffs = our_payoffs[strategy]
+                str_payoffs = our_payoffs.take(strategy, axis=player)
                 if prev_best is None or (str_payoffs > prev_best).all():
                     prev_best = str_payoffs
 
@@ -150,7 +149,8 @@ class Game:
 
             my_vwdse_strategies: List[int] = []
             for strategy in range(self.strategy_counts[player]):
-                if (our_payoffs[strategy] >= prev_best).all():
+                str_payoffs = our_payoffs.take(strategy, axis=player)
+                if (str_payoffs >= prev_best).all():
                     my_vwdse_strategies.append(strategy)
 
             if not my_vwdse_strategies:
