@@ -167,7 +167,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[], []],
+                        [[], [1]],
                     ),
                     # 8
                     (
@@ -275,7 +275,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[], [], []],
+                        [[], [1], [1]],
                     ),
                 ],
             )

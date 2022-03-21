@@ -16,7 +16,7 @@ class Game:
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
         payoff_matrix: Optional[npt.NDArray[np.int64]] = None,
-        optimize_single_strategy_counts: bool = True,
+        optimize_single_strategy_counts: bool = False,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
