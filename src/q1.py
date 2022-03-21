@@ -172,6 +172,8 @@ class Game:
 
             assert prev_best is not None
 
+            # TODO: change conditions here, we only need to list strategies;
+            #       dont need to find eq
             # ensure prev_best is better than other strategies
             for strategy in range(self.strategy_counts[player]):
                 str_payoffs = our_payoffs.take(strategy, axis=player)
@@ -184,6 +186,8 @@ class Game:
                 if (str_payoffs >= prev_best).all():
                     my_vwdse_strategies.append(strategy)
 
+            # TODO: change conditions here, we only need to list strategies;
+            #       dont need to find eq
             if not my_vwdse_strategies:
                 # no equilibrium can exist
                 return [[] for _ in range(self.player_count)]
