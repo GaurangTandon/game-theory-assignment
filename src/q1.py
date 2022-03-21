@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import List, Optional
 
 import numpy as np
+import numpy.typing as npt
 
 
 def read_vec():
@@ -14,12 +15,12 @@ class Game:
         player_count: int = 0,
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
-        payoff_matrix: Optional[np.ndarray] = None,
+        payoff_matrix: Optional[npt.NDArray[np.int64]] = None,
         optimize_single_strategy_counts: bool = True,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
-        self.payoffs = (
+        self.payoffs: npt.NDArray[np.int64] = (
             payoff_matrix
             if payoff_matrix is not None
             else self._read_nfg_payoff(payoff_list or read_vec())
@@ -44,14 +45,14 @@ class Game:
 
         self.maximum_values = self._find_axis_maxima()
 
-    def _read_nfg_payoff(self, full_payoff_list: List[int]):
+    def _read_nfg_payoff(self, full_payoff_list: List[int]) -> npt.NDArray[np.int64]:
         """
         number_list: last line of NFG file containing payoffs
 
         Returns: payoff matrix: with strategies indexed starting with zero
         """
 
-        payoffs_mat = np.zeros(self.strategy_counts + [self.player_count])
+        payoffs_mat: npt.NDArray[np.int64] = np.zeros(self.strategy_counts + [self.player_count], dtype=np.int64)
         current_strategies = [0 for _ in range(self.player_count)]
         payoff_list_index = 0
 
@@ -137,11 +138,11 @@ class Game:
 
         return self._expand_strategy_list(psne_list)
 
-    def _expand_vwds_list(self, vwds_list):
+    def _expand_vwds_list(self, vwds_list: List[List[int]]):
         if not self.optimize_single_strategy_counts:
             return vwds_list
 
-        expanded_vwds_list = []
+        expanded_vwds_list: List[List[int]] = []
         vwds_iter = iter(vwds_list)
         for count in self.original_strategy_counts:
             if count == 1:
@@ -152,18 +153,18 @@ class Game:
 
         return expanded_vwds_list
 
-    def _expand_strategy_list(self, equilibrium_strategy_list):
+    def _expand_strategy_list(self, equilibrium_strategy_list: List[List[int]]):
         if not self.optimize_single_strategy_counts:
             return equilibrium_strategy_list
 
-        expanded_ne_list = []
+        expanded_ne_list: List[List[int]] = []
         for ne in equilibrium_strategy_list:
-            current_ne_expanded = []
+            current_ne_expanded: List[int] = []
             idx_current_ne = 0
             for count in self.original_strategy_counts:
                 current_ne_expanded.append(0 if count == 1 else ne[idx_current_ne])
                 idx_current_ne += 1
-            expanded_ne_list.append(tuple(current_ne_expanded))
+            expanded_ne_list.append(list(current_ne_expanded))
         return expanded_ne_list
 
     @staticmethod
