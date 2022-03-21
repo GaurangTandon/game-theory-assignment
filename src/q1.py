@@ -27,6 +27,9 @@ class Game:
 
         # TODO: delete the players with strategy set size equal to 1
         # in order to reduce the complexity of this algorithm
+        self.original_strategy_counts = self.strategy_counts
+        self.strategy_counts = list(filter(lambda x: x != 1, self.strategy_counts))
+        self.payoffs = np.squeeze(self.payoffs)
 
         self.maximum_values = self._find_axis_maxima()
 
@@ -120,8 +123,19 @@ class Game:
 
             if self._increment(matrix_index):
                 break
+        
+        return self._expand_strategy_list(psne_list)
 
-        return psne_list
+    def _expand_strategy_list(self, ne_list):
+        expanded_ne_list = []
+        for ne in ne_list:
+            current_ne_expanded = []
+            idx_current_ne = 0
+            for count in self.original_strategy_counts:
+                current_ne_expanded.append(0 if count == 1 else ne[idx_current_ne])
+                idx_current_ne += 1
+            expanded_ne_list.append(tuple(current_ne_expanded))
+        return expanded_ne_list
 
     @staticmethod
     def _get_human_readable_strategy_list(strategy_list: List[List[int]]):
@@ -165,7 +179,8 @@ class Game:
 
             vwdse_strategies.append(my_vwdse_strategies)
 
-        return [list(x) for x in cartesian_product(*vwdse_strategies)]
+        vwsde_list = [list(x) for x in cartesian_product(*vwdse_strategies)]
+        return self._expand_strategy_list(vwsde_list)
 
     def list_all_vwdse(self):
         vwdse = self._get_all_vwdse()
