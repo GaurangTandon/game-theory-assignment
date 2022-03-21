@@ -18,7 +18,28 @@ def pytest_addoption(parser):
     parser.addoption("--all", action="store_true", help="run all combinations")
     parser.addoption("--manual", action="store_true", help="run manual tests")
     parser.addoption("--gambit", action="store_true", help="run gambit tests")
+    parser.addoption("--stressed_out", action="store_true", help="run stress tests")
 
+def million_players():
+    pc = int(30)
+    dim_count = pc + 1
+    payoffs_shape = np.full((dim_count,), 1, dtype=np.int64)
+    payoffs_shape[-1] = pc
+    payoffs = np.ones(payoffs_shape)
+    vwdse_strategy = [[1] for _ in range(pc)] 
+    psne_state = [[1 for _ in range(pc)]]
+
+    return (
+        (pc, [1 for _ in range(pc)], [], payoffs),
+        psne_state, vwdse_strategy
+    )
+
+def get_large_tests():
+    tests = []
+    # 1e6 players
+    tests.append(million_players())
+
+    return tests
 
 def pytest_generate_tests(metafunc):
     if "nfg_str" in metafunc.fixturenames:
@@ -278,6 +299,10 @@ def pytest_generate_tests(metafunc):
                         [[], [1], [1]],
                     ),
                 ],
+            )
+        elif metafunc.config.getoption("stressed_out") or metafunc.config.getoption("all"):
+            metafunc.parametrize(
+                "game_args,psne_strats,vwdse_strats", get_large_tests()
             )
         else:
             metafunc.fixturenames.insert(0, "skip_test")
