@@ -21,9 +21,9 @@ def pytest_addoption(parser):
 
 
 def pytest_generate_tests(metafunc):
-    gambit_nfgs = (REPO_ROOT / "gambit/contrib/games").glob("*.nfg")
     if "nfg_str" in metafunc.fixturenames:
         if metafunc.config.getoption("gambit") or metafunc.config.getoption("all"):
+            gambit_nfgs = (REPO_ROOT / "gambit/contrib/games").glob("*.nfg")
             metafunc.parametrize("nfg_str", [nfg.read_text() for nfg in gambit_nfgs])
         else:
             metafunc.fixturenames.insert(0, "skip_test")

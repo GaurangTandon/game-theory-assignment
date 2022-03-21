@@ -37,11 +37,9 @@ class Game:
             )
         )
         if self.optimize_single_strategy_counts:
-            print("@DEBUG-1:", self.payoffs.shape)
             self.payoffs = np.squeeze(self.payoffs)
             mask_utilities = np.array(self.original_strategy_counts) != 1
             self.payoffs = self.payoffs[..., mask_utilities]
-            print("@DEBUG-2:", self.payoffs.shape)
             self.player_count = len(self.payoffs.shape) - 1
 
         self.maximum_values = self._find_axis_maxima()
@@ -139,6 +137,21 @@ class Game:
 
         return self._expand_strategy_list(psne_list)
 
+    def _expand_vwds_list(self, vwds_list):
+        if not self.optimize_single_strategy_counts:
+            return vwds_list
+
+        expanded_vwds_list = []
+        vwds_iter = iter(vwds_list)
+        for count in self.original_strategy_counts:
+            if count == 1:
+                expanded_vwds_list.append([1])
+                break
+
+            expanded_vwds_list.append(next(vwds_iter))
+
+        return expanded_vwds_list
+
     def _expand_strategy_list(self, equilibrium_strategy_list):
         if not self.optimize_single_strategy_counts:
             return equilibrium_strategy_list
@@ -175,15 +188,17 @@ class Game:
                 if prev_best is None or (str_payoffs >= prev_best).all():
                     prev_best = str_payoffs
 
+            # make type checker happy
             assert prev_best is not None
 
-            # TODO: change conditions here, we only need to list strategies;
-            #       dont need to find eq
             # ensure prev_best is better than other strategies
             for strategy in range(self.strategy_counts[player]):
                 str_payoffs = our_payoffs.take(strategy, axis=player)
                 if not (prev_best >= str_payoffs).all():
-                    return [[] for _ in range(self.player_count)]
+                    # vwds not possible
+                    # make prev_best inf so that any strat cant be found in next step
+                    prev_best = np.full(str_payoffs.shape, np.inf)
+                    break
 
             my_vwdse_strategies: List[int] = []
             for strategy in range(self.strategy_counts[player]):
@@ -191,16 +206,9 @@ class Game:
                 if (str_payoffs >= prev_best).all():
                     my_vwdse_strategies.append(strategy)
 
-            # TODO: change conditions here, we only need to list strategies;
-            #       dont need to find eq
-            if not my_vwdse_strategies:
-                # no equilibrium can exist
-                return [[] for _ in range(self.player_count)]
-
             vwdse_strategies.append(my_vwdse_strategies)
 
-        # vwsde_list = [list(x) for x in cartesian_product(*vwdse_strategies)]
-        return self._expand_strategy_list(vwdse_strategies)
+        return self._expand_vwds_list(vwdse_strategies)
 
     def list_all_vwdse(self):
         vwdse = self._get_all_vwdse()
