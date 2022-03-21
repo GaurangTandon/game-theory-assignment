@@ -16,7 +16,7 @@ class Game:
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
         payoff_matrix: Optional[np.ndarray] = None,
-        optimize_single_strategy_counts: bool = False,
+        optimize_single_strategy_counts: bool = True,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
@@ -38,7 +38,12 @@ class Game:
             )
         )
         if self.optimize_single_strategy_counts:
+            print("@DEBUG-1:", self.payoffs.shape)
             self.payoffs = np.squeeze(self.payoffs)
+            mask_utilities = np.array(self.original_strategy_counts) != 1
+            self.payoffs = self.payoffs[..., mask_utilities]
+            print("@DEBUG-2:", self.payoffs.shape)
+            self.player_count = len(self.payoffs.shape) - 1
 
         self.maximum_values = self._find_axis_maxima()
 
