@@ -32,6 +32,7 @@ def pytest_generate_tests(metafunc):
             metafunc.parametrize(
                 "game_args,psne_strats,vwdse_strats",
                 [
+                    # 0
                     (
                         (
                             2,
@@ -47,6 +48,7 @@ def pytest_generate_tests(metafunc):
                         [[1, 2], [2, 1]],
                         [],
                     ),
+                    # 1
                     (
                         (
                             2,
@@ -62,6 +64,7 @@ def pytest_generate_tests(metafunc):
                         [],
                         [],
                     ),
+                    # 2
                     (
                         (
                             2,
@@ -78,6 +81,7 @@ def pytest_generate_tests(metafunc):
                         [[1, 2], [3, 3], [2, 1]],
                         [],
                     ),
+                    # 3
                     (
                         (
                             3,
@@ -99,6 +103,7 @@ def pytest_generate_tests(metafunc):
                         [[2, 2, 2]],
                         [[2, 2, 2]],
                     ),
+                    # 4
                     (
                         (
                             2,
@@ -114,6 +119,7 @@ def pytest_generate_tests(metafunc):
                         None,
                         [[2, 2]],
                     ),
+                    # 5
                     (
                         (
                             2,
@@ -130,6 +136,7 @@ def pytest_generate_tests(metafunc):
                         None,
                         [[2, 1], [3, 1]],
                     ),
+                    # 6
                     (
                         (
                             2,
@@ -146,6 +153,7 @@ def pytest_generate_tests(metafunc):
                         None,
                         [[2, 1], [2, 2], [3, 1], [3, 2]],
                     ),
+                    # 7
                     (
                         (
                             2,
@@ -161,6 +169,7 @@ def pytest_generate_tests(metafunc):
                         None,
                         [],
                     ),
+                    # 8
                     (
                         (
                             3,
@@ -182,6 +191,7 @@ def pytest_generate_tests(metafunc):
                         [[1, 1, 1]],
                         [[1, 1, 1]],
                     ),
+                    # 9
                     (
                         (
                             2,
@@ -199,11 +209,13 @@ def pytest_generate_tests(metafunc):
                         None,
                         [[3, 1]],
                     ),
+                    # 10
                     (
                         (5, [1, 1, 1, 1, 1], [], np.array([[[[[[1, 2, 2, 10, 1]]]]]])),
                         [[1, 1, 1, 1, 1]],
                         [[1, 1, 1, 1, 1]],
                     ),
+                    # 11
                     (
                         (
                             2,
@@ -221,6 +233,7 @@ def pytest_generate_tests(metafunc):
                         None,
                         [[1, 1], [2, 1], [3, 1], [4, 1]],
                     ),
+                    # 12
                     (
                         (
                             3,
@@ -234,6 +247,28 @@ def pytest_generate_tests(metafunc):
                                     ],
                                     [
                                         [[-1, 1, 1], [0, 2, 0]],
+                                        [[0, 0, 2], [1, 1, 1]],
+                                    ],
+                                ]
+                            ),
+                        ),
+                        None,
+                        [[1, 1, 1]],
+                    ),
+                    # 13
+                    (
+                        (
+                            3,
+                            [2, 2, 2],
+                            [],
+                            np.array(
+                                [
+                                    [
+                                        [[0, 0, 0], [1, 1, -1]],
+                                        [[1, -1, 1], [2, 0, 0]],
+                                    ],
+                                    [
+                                        [[5, 1, 1], [0, 2, 0]],
                                         [[0, 0, 2], [1, 1, 1]],
                                     ],
                                 ]
