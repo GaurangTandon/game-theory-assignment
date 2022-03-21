@@ -1,5 +1,4 @@
 from copy import deepcopy
-from itertools import product as cartesian_product
 from typing import List, Optional
 
 import numpy as np
@@ -178,11 +177,13 @@ class Game:
 
             assert prev_best is not None
 
+            # TODO: change conditions here, we only need to list strategies;
+            #       dont need to find eq
             # ensure prev_best is better than other strategies
             for strategy in range(self.strategy_counts[player]):
                 str_payoffs = our_payoffs.take(strategy, axis=player)
                 if not (prev_best >= str_payoffs).all():
-                    return []
+                    return [[] for _ in range(self.player_count)]
 
             my_vwdse_strategies: List[int] = []
             for strategy in range(self.strategy_counts[player]):
@@ -190,31 +191,32 @@ class Game:
                 if (str_payoffs >= prev_best).all():
                     my_vwdse_strategies.append(strategy)
 
+            # TODO: change conditions here, we only need to list strategies;
+            #       dont need to find eq
             if not my_vwdse_strategies:
                 # no equilibrium can exist
-                return []
+                return [[] for _ in range(self.player_count)]
 
             vwdse_strategies.append(my_vwdse_strategies)
 
-        vwsde_list = [list(x) for x in cartesian_product(*vwdse_strategies)]
-        return self._expand_strategy_list(vwsde_list)
+        # vwsde_list = [list(x) for x in cartesian_product(*vwdse_strategies)]
+        return self._expand_strategy_list(vwdse_strategies)
 
     def list_all_vwdse(self):
         vwdse = self._get_all_vwdse()
         return self._get_human_readable_strategy_list(vwdse)
 
+    def print_output(self):
+        psnes = self.list_all_psne()
+        vwdses = self.list_all_vwdse()
+
+        print(len(psnes))
+        for psne in psnes:
+            print(" ".join(map(str, psne)))
+        for vwdse in vwdses:
+            print(len(vwdse), " ".join(map(str, vwdse)))
+
 
 if __name__ == "__main__":
-    game = Game(2, [3, 2], [1, 1, 0, 2, 0, 2, 1, 1, 0, 3, 2, 0])
-
-    expected_payoffs = np.array(
-        [[[1.0, 1.0], [1.0, 1.0]], [[0.0, 2.0], [0.0, 3.0]], [[0.0, 2.0], [2.0, 0.0]]]
-    ).tolist()
-    assert game.payoffs.tolist() == expected_payoffs
-
-    print([1, 1, 0, 2, 0, 2, 1, 1, 0, 3, 2, 0])
-    print(np.array(expected_payoffs))
-
-    # TODO: find some better game payoff matrix to test the psne listing
-    print(game.list_all_psne())
-    print(game.list_all_vwdse())
+    g = Game()
+    g.print_output()
