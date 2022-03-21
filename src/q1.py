@@ -52,7 +52,9 @@ class Game:
         Returns: payoff matrix: with strategies indexed starting with zero
         """
 
-        payoffs_mat: npt.NDArray[np.int64] = np.zeros(self.strategy_counts + [self.player_count], dtype=np.int64)
+        payoffs_mat: npt.NDArray[np.int64] = np.zeros(
+            self.strategy_counts + [self.player_count], dtype=np.int64
+        )
         current_strategies = [0 for _ in range(self.player_count)]
         payoff_list_index = 0
 
@@ -229,15 +231,5 @@ class Game:
 
 
 if __name__ == "__main__":
-    g = Game(
-        5, 
-        [1, 1, 1, 1, 1], 
-        [], 
-        np.array(
-            [[[[[[ 1,  2,  2, 10,  1]]]]]]
-        ),
-    )
-    # psne_strats = [[1, 1, 1, 1, 1]], 
-    # vwdse_strats = [[1], [1], [1], [1], [1]]
-    print(g.list_all_vwdse())
+    g = Game()
     g.print_output()
