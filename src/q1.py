@@ -16,7 +16,7 @@ class Game:
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
         payoff_matrix: Optional[npt.NDArray[np.int64]] = None,
-        optimize_single_strategy_counts: bool = False,
+        optimize_single_strategy_counts: bool = True,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
@@ -143,14 +143,13 @@ class Game:
             return vwds_list
 
         expanded_vwds_list: List[List[int]] = []
-        vwds_iter = iter(vwds_list)
+        idx_current_vwds = 0
         for count in self.original_strategy_counts:
             if count == 1:
-                expanded_vwds_list.append([1])
-                break
-
-            expanded_vwds_list.append(next(vwds_iter))
-
+                expanded_vwds_list.append([0])
+            else:
+                expanded_vwds_list.append(vwds_list[idx_current_vwds])
+                idx_current_vwds += 1
         return expanded_vwds_list
 
     def _expand_strategy_list(self, equilibrium_strategy_list: List[List[int]]):
@@ -162,8 +161,11 @@ class Game:
             current_ne_expanded: List[int] = []
             idx_current_ne = 0
             for count in self.original_strategy_counts:
-                current_ne_expanded.append(0 if count == 1 else ne[idx_current_ne])
-                idx_current_ne += 1
+                if count == 1:
+                    current_ne_expanded.append(0)
+                else:
+                    current_ne_expanded.append(ne[idx_current_ne])
+                    idx_current_ne += 1
             expanded_ne_list.append(list(current_ne_expanded))
         return expanded_ne_list
 
@@ -227,5 +229,15 @@ class Game:
 
 
 if __name__ == "__main__":
-    g = Game()
+    g = Game(
+        5, 
+        [1, 1, 1, 1, 1], 
+        [], 
+        np.array(
+            [[[[[[ 1,  2,  2, 10,  1]]]]]]
+        ),
+    )
+    # psne_strats = [[1, 1, 1, 1, 1]], 
+    # vwdse_strats = [[1], [1], [1], [1], [1]]
+    print(g.list_all_vwdse())
     g.print_output()
