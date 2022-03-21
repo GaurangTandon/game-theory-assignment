@@ -46,7 +46,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [2, 1]],
-                        [],
+                        [[], []],
                     ),
                     # 1
                     (
@@ -62,7 +62,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [],
-                        [],
+                        [[], []],
                     ),
                     # 2
                     (
@@ -79,7 +79,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 2], [3, 3], [2, 1]],
-                        [],
+                        [[], []],
                     ),
                     # 3
                     (
@@ -101,7 +101,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[2, 2, 2]],
-                        [[2, 2, 2]],
+                        [[2], [2], [2]],
                     ),
                     # 4
                     (
@@ -117,7 +117,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[2, 2]],
+                        [[2], [2]],
                     ),
                     # 5
                     (
@@ -134,7 +134,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[2, 1], [3, 1]],
+                        [[2, 3], [1]],
                     ),
                     # 6
                     (
@@ -151,7 +151,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[2, 1], [2, 2], [3, 1], [3, 2]],
+                        [[2, 3], [1, 2]],
                     ),
                     # 7
                     (
@@ -167,7 +167,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [],
+                        [[], []],
                     ),
                     # 8
                     (
@@ -189,7 +189,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         [[1, 1, 1]],
-                        [[1, 1, 1]],
+                        [[1], [1], [1]],
                     ),
                     # 9
                     (
@@ -207,13 +207,13 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[3, 1]],
+                        [[3], [1]],
                     ),
                     # 10
                     (
                         (5, [1, 1, 1, 1, 1], [], np.array([[[[[[1, 2, 2, 10, 1]]]]]])),
                         [[1, 1, 1, 1, 1]],
-                        [[1, 1, 1, 1, 1]],
+                        [[1], [1], [1], [1], [1]],
                     ),
                     # 11
                     (
@@ -231,7 +231,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[1, 1], [2, 1], [3, 1], [4, 1]],
+                        [[1, 2, 3, 4], [1]],
                     ),
                     # 12
                     (
@@ -253,7 +253,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [[1, 1, 1]],
+                        [[1], [1], [1]],
                     ),
                     # 13
                     (
@@ -275,7 +275,7 @@ def pytest_generate_tests(metafunc):
                             ),
                         ),
                         None,
-                        [],
+                        [[], [], []],
                     ),
                 ],
             )
