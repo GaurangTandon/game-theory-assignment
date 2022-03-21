@@ -16,6 +16,7 @@ class Game:
         strategy_counts: List[int] = [],
         payoff_list: List[int] = [],
         payoff_matrix: Optional[np.ndarray] = None,
+        optimize_single_strategy_counts: bool = False,
     ) -> None:
         self.player_count = player_count or int(input())
         self.strategy_counts = strategy_counts or read_vec()
@@ -25,11 +26,19 @@ class Game:
             else self._read_nfg_payoff(payoff_list or read_vec())
         )
 
+        self.optimize_single_strategy_counts = optimize_single_strategy_counts
+
         # TODO: delete the players with strategy set size equal to 1
         # in order to reduce the complexity of this algorithm
         self.original_strategy_counts = self.strategy_counts
-        self.strategy_counts = list(filter(lambda x: x != 1, self.strategy_counts))
-        self.payoffs = np.squeeze(self.payoffs)
+        self.strategy_counts = list(
+            filter(
+                lambda x: not self.optimize_single_strategy_counts or x != 1,
+                self.strategy_counts,
+            )
+        )
+        if self.optimize_single_strategy_counts:
+            self.payoffs = np.squeeze(self.payoffs)
 
         self.maximum_values = self._find_axis_maxima()
 
@@ -123,12 +132,15 @@ class Game:
 
             if self._increment(matrix_index):
                 break
-        
+
         return self._expand_strategy_list(psne_list)
 
-    def _expand_strategy_list(self, ne_list):
+    def _expand_strategy_list(self, equilibrium_strategy_list):
+        if not self.optimize_single_strategy_counts:
+            return equilibrium_strategy_list
+
         expanded_ne_list = []
-        for ne in ne_list:
+        for ne in equilibrium_strategy_list:
             current_ne_expanded = []
             idx_current_ne = 0
             for count in self.original_strategy_counts:
